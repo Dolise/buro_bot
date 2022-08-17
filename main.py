@@ -1,3 +1,4 @@
+import logging
 import os
 import json
 import telebot
@@ -108,4 +109,6 @@ def webhook():
     return "!", 200
 
 
-server.run(host="0.0.0.0", port=5000)
+if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
+    server.run(host="0.0.0.0", port=5000)
