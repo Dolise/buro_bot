@@ -110,5 +110,6 @@ def webhook():
 
 
 if __name__ == "__main__":
+    print("STARTED")
     logging.basicConfig(level=logging.INFO)
     server.run(host="0.0.0.0", port=5000)
