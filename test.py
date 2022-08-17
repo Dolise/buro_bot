@@ -1,5 +1,5 @@
 import os
-
+import logging
 from flask import Flask, request
 
 import telebot
@@ -35,4 +35,5 @@ def webhook():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO)
     server.run(host="0.0.0.0", port=5000)
