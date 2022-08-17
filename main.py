@@ -108,8 +108,5 @@ def webhook():
     bot.set_webhook(url='https://balanceburo.herokuapp.com' + token)
     return "!", 200
 
-
-if __name__ == "__main__":
-    print("STARTED")
-    logging.basicConfig(level=logging.INFO)
-    server.run(host="0.0.0.0", port=5000)
+print("HERE")
+bot.polling()
