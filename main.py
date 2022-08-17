@@ -91,4 +91,10 @@ def answer(message):
         )
 
 
-bot.infinity_polling()
+while True:
+    try:
+        bot.polling(none_stop=True)
+
+    except Exception as e:
+        print(e)
+        time.sleep(15)
