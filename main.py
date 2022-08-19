@@ -11,8 +11,11 @@ allowed_users = json.loads(os.getenv("ALLOWED_IDS"))
 token = os.getenv("TOKEN")
 server = Flask(__name__)
 
+__location__ = os.path.realpath(
+    os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-bot = telebot.TeleBot(token)
+
+bot = telebot.TeleBot('5768029499:AAFdtqS7HKdjUsghJ_H81ko8Ui37pb4PK4M')
 
 
 def permission(message):
@@ -93,28 +96,13 @@ def answer(message):
             "\n\n"
             "https://forms.gle/UL6hVR1nALW9TLgS6"
         )
-    elif message.text == buttons.sticker:
-        memes = os.listdir("memes")
+    elif message.text == buttons.sticker.text:
+        memes = os.listdir(__location__ + "/memes")
         random_index = random.randint(0, len(memes) - 1)
-        bot.send_photo(message.chat_id, open(f"memes/{memes[random_index]}", "rb"))
 
-
-@server.route('/' + token, methods=['POST'])
-def getMessage():
-    json_string = request.get_data().decode('utf-8')
-    update = telebot.types.Update.de_json(json_string)
-    bot.process_new_updates([update])
-    return "!", 200
-
-
-@server.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url='https://balanceburo.herokuapp.com/' + token)
-    return "!", 200
+        bot.send_photo(message.chat.id, open(f"{__location__}/memes/{memes[random_index]}", "rb"))
 
 
 if __name__ == "__main__":
-    print("STARTED")
     logging.basicConfig(level=logging.INFO)
     server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
