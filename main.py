@@ -15,7 +15,7 @@ __location__ = os.path.realpath(
     os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
 
-bot = telebot.TeleBot('5768029499:AAFdtqS7HKdjUsghJ_H81ko8Ui37pb4PK4M')
+bot = telebot.TeleBot(token)
 
 
 def permission(message):
@@ -101,6 +101,21 @@ def answer(message):
         random_index = random.randint(0, len(memes) - 1)
 
         bot.send_photo(message.chat.id, open(f"{__location__}/memes/{memes[random_index]}", "rb"))
+
+
+@server.route('/' + token, methods=['POST'])
+def getMessage():
+    json_string = request.get_data().decode('utf-8')
+    update = telebot.types.Update.de_json(json_string)
+    bot.process_new_updates([update])
+    return "!", 200
+
+
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url='https://balanceburo.herokuapp.com' + token)
+    return "!", 200
 
 
 if __name__ == "__main__":
