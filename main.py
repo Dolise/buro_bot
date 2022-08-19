@@ -1,6 +1,7 @@
 import logging
 import os
 import json
+import random
 import telebot
 from telebot import types
 import buttons
@@ -28,9 +29,7 @@ def start(message):
     markup.add(*buttons.default_buttons)
     bot.send_message(
         message.chat.id,
-        "Поздравляем! Вы подписались на BALANCE BURO bot."
-        "\n\n"
-        "Используйте /off чтобы приостановить подписку.",
+        "Поздравляем! Вы подписались на BALANCE BURO bot.",
         reply_markup=markup
     )
 
@@ -42,21 +41,23 @@ def answer(message):
     if message.text == buttons.refer_cases_guide.text:
         bot.send_message(
             message.chat.id,
-            "Тут у нас инструкация по передаче дел для дизайнеров и проджект-менеджеров"
+            "Тут у нас инструкация по передаче дел для дизайнеров и проджект-менеджеров 🖤"
             "\n\n"
             "https://clck.ru/sc4Ax"
         )
     elif message.text == buttons.yandex_disc.text:
         bot.send_message(
             message.chat.id,
-            "Лови ссылочку на Яндекс Диск!"
+            "Лови ссылочку на Яндекс Диск 💾"
             "\n\n"
             "https://disk.yandex.ru/d/0VNn3egXzagtuA"
         )
     elif message.text == buttons.motion_technical_task.text:
         bot.send_message(
             message.chat.id,
-            "Анимируемся! Пишем ТЗ по шаблону в этом доке — https://clck.ru/sXMqM"
+            "Анимируемся 🌀"
+            "\n\n"
+            "Пишем ТЗ по шаблону в этом доке — https://clck.ru/sXMqM "
             "\n\n"
             "Заполняя форму не забудь, что ТЗ должно соответствовать регламенту:"
             "\n\n"
@@ -72,7 +73,7 @@ def answer(message):
             "\n\n"
             "6) Составляем четкий сценарий анимации по кадрам и прикрепляем референсы/шрифты, если есть."
             "\n\n"
-            "7) Как только задача закрывается — пишем «выполнено» над рамкой с ТЗ."
+            "7) Как только задача закрывается — моушен пишет «выполнено» над рамкой с ТЗ."
         )
     elif message.text == buttons.miro_table.text:
         bot.send_message(
@@ -86,12 +87,16 @@ def answer(message):
     elif message.text == buttons.work_report.text:
         bot.send_message(
             message.chat.id,
-            "Ура, пятница!"
+            "Ура, пятница 🥂"
             "\n\n"
             "Заполни отчёт и не забудь отправить мем недели!"
             "\n\n"
             "https://forms.gle/UL6hVR1nALW9TLgS6"
         )
+    elif message.text == buttons.sticker:
+        memes = os.listdir("memes")
+        random_index = random.randint(0, len(memes) - 1)
+        bot.send_photo(message.chat_id, open(f"memes/{memes[random_index]}", "rb"))
 
 
 @server.route('/' + token, methods=['POST'])
