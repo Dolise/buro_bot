@@ -8,7 +8,7 @@ import buttons
 from flask import Flask, request
 
 allowed_users = json.loads(os.getenv("ALLOWED_IDS"))
-token = os.getenv("TOKEN")
+token = "5768029499:AAFuqs0io3Dk_SxsJqs5dF3vAxkSYrQwovw"
 server = Flask(__name__)
 
 __location__ = os.path.realpath(
@@ -28,13 +28,20 @@ def permission(message):
 def start(message):
     if not permission(message):
         return
-    markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=1)
-    markup.add(*buttons.default_buttons)
     bot.send_message(
         message.chat.id,
         "Поздравляем! Вы подписались на BALANCE BURO bot.",
-        reply_markup=markup
+        reply_markup=buttons.main_markup
     )
+
+
+def process_presentation_step(message):
+    if message.text == buttons.easy_presentation.text:
+        msg = bot.send_message(message.chat.id, "лови! https://clck.ru/srKp3 🤍", reply_markup=buttons.main_markup)
+        bot.register_next_step_handler(msg, answer)
+    elif message.text == buttons.default_presentation.text:
+        msg = bot.send_message(message.chat.id, "лови! https://clck.ru/srK9g 🖤", reply_markup=buttons.main_markup)
+        bot.register_next_step_handler(msg, answer)
 
 
 @bot.message_handler(content_types="text")
@@ -101,6 +108,9 @@ def answer(message):
         random_index = random.randint(0, len(memes) - 1)
 
         bot.send_photo(message.chat.id, open(f"{__location__}/memes/{memes[random_index]}", "rb"))
+    elif message.text == buttons.presentations.text:
+        msg = bot.send_message(message.chat.id, "Какая тебе нужна версия?", reply_markup=buttons.presentation_markup)
+        bot.register_next_step_handler(msg, process_presentation_step)
 
 
 @server.route('/' + token, methods=['POST'])
@@ -119,5 +129,4 @@ def webhook():
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO)
-    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
+    bot.polling()
