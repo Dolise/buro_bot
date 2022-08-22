@@ -3,12 +3,11 @@ import os
 import json
 import random
 import telebot
-from telebot import types
 import buttons
 from flask import Flask, request
 
 allowed_users = json.loads(os.getenv("ALLOWED_IDS"))
-token = "5768029499:AAFuqs0io3Dk_SxsJqs5dF3vAxkSYrQwovw"
+token = os.getenv("TOKEN")
 server = Flask(__name__)
 
 __location__ = os.path.realpath(
@@ -129,4 +128,5 @@ def webhook():
 
 
 if __name__ == "__main__":
-    bot.polling()
+    logging.basicConfig(level=logging.INFO)
+    server.run(host="0.0.0.0", port=int(os.environ.get('PORT', 5000)))
